@@ -4,6 +4,7 @@ OCR/
 .vscode/
 *.jpg
 *.pdf
+*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
