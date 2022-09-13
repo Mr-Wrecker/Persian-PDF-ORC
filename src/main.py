@@ -1,6 +1,7 @@
 import argparse
 import pathlib
-from libs.pdf2img import Convertor
+from libs.convert import Convertor
+from libs.i2ocr import OCR
 
 parser = argparse.ArgumentParser(
     description='''
@@ -25,4 +26,6 @@ if __name__ == '__main__':
         args.pdf, args.quality) else ('Some Things Wrongs!!!')
 
     if args.ocr:
-        print(args.ocr)
+        OCR()
+
+    print("Process Complete.")
