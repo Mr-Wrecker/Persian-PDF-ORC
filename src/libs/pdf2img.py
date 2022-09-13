@@ -1,5 +1,5 @@
 import os
-import re
+import shutil
 
 
 def Convertor(file, quality):
@@ -9,10 +9,10 @@ def Convertor(file, quality):
     directory = "Images"
     path = os.path.join(os.getcwd(), directory)
     if os.path.exists(path):
-        print("Directory Exist ...")
-    else:
-        # Create the directory
-        os.makedirs(path)
+        shutil.rmtree(path)
+
+    # Create the directory
+    os.makedirs(path)
 
     try:
         os.system(f"pdftoppm -jpeg -r {quality} {file} Images/IMG")

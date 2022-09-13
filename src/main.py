@@ -23,3 +23,6 @@ args = parser.parse_args()
 if __name__ == '__main__':
     print('Convert Successfully Done.') if Convertor(
         args.pdf, args.quality) else ('Some Things Wrongs!!!')
+
+    if args.ocr:
+        print(args.ocr)

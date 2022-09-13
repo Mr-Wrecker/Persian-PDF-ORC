@@ -1,3 +1,9 @@
+# Project Temp File/Directory
+Images/
+.vscode/
+*.jpg
+*.pdf
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
