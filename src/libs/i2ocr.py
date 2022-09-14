@@ -52,12 +52,14 @@ def OCR():
         if os.path.isfile(os.path.join(Images_Path, path)):
             images.append(f"{Images_Path}/{path}")
 
+    images = sorted(images)
+
     State = None
     Link = Default_Link
     # Upload Image File
     for img in images:
         img_name = img.split('/')[-1][:-4]
-        print(f"Process For {img_name}")
+        print(f"\n\nProcess For {img_name}")
 
         # Skip Exist Process
         if os.path.exists(f"{OCR_Path}/{img_name}.txt"):
@@ -90,13 +92,13 @@ def OCR():
         Custom_Sleep(
             driver,
             By.ID,
-            'download_text',
+            'download_docx_box',    # download_text, download_docx_box, download_docx_section
             Link,
             'href'
         )
 
         # Find Link of Result And Download
         href = driver.find_element(
-            By.ID, 'download_text').get_attribute('href')
+            By.ID, 'download_docx_box').get_attribute('href')
         Link = href
         downloader(href, img_name)

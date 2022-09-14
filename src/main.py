@@ -2,6 +2,7 @@ import argparse
 import pathlib
 from libs.convert import Convertor
 from libs.i2ocr import OCR
+from libs.mergeDocuments import Combine
 
 parser = argparse.ArgumentParser(
     description='''
@@ -27,5 +28,7 @@ if __name__ == '__main__':
 
     if args.ocr:
         OCR()
+
+    Combine(str(args.pdf).split('/')[-1][:-4])
 
     print("Process Complete.")

@@ -5,8 +5,9 @@ from .clean import Cleaner
 
 def downloader(url, name):
     Cleaner(OCR_Path, False)
+    print("Downloading...\n", url)
 
-    name = f"{name}.txt"
+    name = f"{name}.{url.split('.')[-1]}"
     # NOTE the stream=True parameter below
     with requests.get(url, stream=True) as r:
         r.raise_for_status()
