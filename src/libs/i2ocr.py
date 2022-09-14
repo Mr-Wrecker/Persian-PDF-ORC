@@ -59,10 +59,10 @@ def OCR():
     # Upload Image File
     for img in images:
         img_name = img.split('/')[-1][:-4]
-        print(f"\n\nProcess For {img_name}")
+        print(f"\nProcess For {img_name}")
 
         # Skip Exist Process
-        if os.path.exists(f"{OCR_Path}/{img_name}.txt"):
+        if os.path.exists(f"{OCR_Path}/{img_name}.docx"):
             print('Result is Exist.')
             continue
 
