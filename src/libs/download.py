@@ -6,7 +6,7 @@ from .clean import Cleaner
 def downloader(url, name):
     Cleaner(OCR_Path, False)
 
-    name = f"{name[:-4]}.txt"
+    name = f"{name}.txt"
     # NOTE the stream=True parameter below
     with requests.get(url, stream=True) as r:
         r.raise_for_status()

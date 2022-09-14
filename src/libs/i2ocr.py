@@ -3,7 +3,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from ._CONST import Images_Path, Default_Link
+from ._CONST import Images_Path, Default_Link, OCR_Path
 from .download import downloader
 
 URL = "https://www.i2ocr.com/free-online-persian-ocr"
@@ -56,6 +56,15 @@ def OCR():
     Link = Default_Link
     # Upload Image File
     for img in images:
+        img_name = img.split('/')[-1][:-4]
+        print(f"Process For {img_name}")
+
+        # Skip Exist Process
+        if os.path.exists(f"{OCR_Path}/{img_name}.txt"):
+            print('Result is Exist.')
+            continue
+
+        # Find Select Image Button and Upload Image
         Btn = driver.find_element(By.XPATH, '//*[@id="i2ocr_uploadedfile"]')
         Custom_Sleep()
         Btn.send_keys(img)
@@ -76,6 +85,7 @@ def OCR():
             State
         )
 
+        # Extract Text
         driver.find_element(By.XPATH, '//*[@id="submit_i2ocr"]').submit()
         Custom_Sleep(
             driver,
@@ -85,7 +95,8 @@ def OCR():
             'href'
         )
 
+        # Find Link of Result And Download
         href = driver.find_element(
             By.ID, 'download_text').get_attribute('href')
         Link = href
-        downloader(href, img.split('/')[-1])
+        downloader(href, img_name)
