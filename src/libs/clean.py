@@ -2,13 +2,12 @@ import os
 import shutil
 
 
-def Cleaner(directory, remove):
-    print(f"Create {directory}/ ...")
+def Cleaner(path, remove):
+    print(f"Directory Check... \n{path}/")
 
     # Leaf directory
-    path = os.path.join(os.getcwd(), directory)
     if os.path.exists(path) and remove:
         shutil.rmtree(path)
 
     # Create the directory
-    os.makedirs(path)
+    os.makedirs(path, exist_ok=True)

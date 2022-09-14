@@ -1,13 +1,13 @@
 import os
-from ._CONST import Image_Directory
-from .cleaner import Cleaner
+from ._CONST import Images_Path
+from .clean import Cleaner
 
 
 def Convertor(file, quality):
-    Cleaner(Image_Directory, True)
+    Cleaner(Images_Path, True)
 
     try:
-        os.system(f"pdftoppm -jpeg -r {quality} {file} {Image_Directory}/IMG")
+        os.system(f"pdftoppm -jpeg -r {quality} {file} {Images_Path}/IMG")
         return True
     except:
         return False

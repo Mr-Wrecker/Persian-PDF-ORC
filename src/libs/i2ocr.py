@@ -3,7 +3,7 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
-from ._CONST import Image_Directory, Default_Link
+from ._CONST import Images_Path, Default_Link
 from .download import downloader
 
 URL = "https://www.i2ocr.com/free-online-persian-ocr"
@@ -24,7 +24,16 @@ def Custom_Sleep(*args):
     else:
         while True:
             time.sleep(delayTime)
-            if args[0].find_element(args[1], args[2]):
+            # Driver, Find_Element_Method, Value
+            if len(args) == 3 and args[0].find_element(args[1], args[2]):
+                break
+
+            # Driver, Find_Element_Method, Value, Condition
+            elif len(args) == 4 and args[0].find_element(args[1], args[2]) != args[3]:
+                break
+
+            # Driver, Find_Element_Method, Value, Condition, href
+            elif len(args) == 5 and args[0].find_element(args[1], args[2]).get_attribute('href') != args[3]:
                 break
 
 
@@ -37,31 +46,46 @@ def OCR():
     Custom_Sleep()
 
     images = []
-    IMG_PATH = os.path.join(os.getcwd(), Image_Directory)
     # Iterate directory
-    for path in os.listdir(os.path.join(IMG_PATH)):
+    for path in os.listdir(Images_Path):
         # check if current path is a file
-        if os.path.isfile(os.path.join(IMG_PATH, path)):
-            images.append(f"{IMG_PATH}/{path}")
-    print(images)
+        if os.path.isfile(os.path.join(Images_Path, path)):
+            images.append(f"{Images_Path}/{path}")
 
+    State = None
+    Link = Default_Link
     # Upload Image File
-    Btn = driver.find_element(By.XPATH, '//*[@id="i2ocr_uploadedfile"]')
-    Custom_Sleep()
-    Btn.send_keys(images[0])
+    for img in images:
+        Btn = driver.find_element(By.XPATH, '//*[@id="i2ocr_uploadedfile"]')
+        Custom_Sleep()
+        Btn.send_keys(img)
 
-    Custom_Sleep(
-        driver,
-        By.XPATH,
-        '//*[@id="i2ocr_form"]/div[1]/div[2]/div[5]'
-    )
+        Custom_Sleep(
+            driver,
+            By.XPATH,
+            '//*[@id="i2ocr_form"]/div[1]/div[2]/div[5]'
+        )
 
-    driver.find_element(By.XPATH, '//*[@id="submit_i2ocr"]').submit()
+        # Set State
+        State = driver.find_element(
+            By.XPATH, '//*[@id="filestat"]').text
+        Custom_Sleep(
+            driver,
+            By.XPATH,
+            '//*[@id="filestat"]',
+            State
+        )
 
-    while True:
-        time.sleep(delayTime)
-        if driver.find_element(By.ID, 'download_text').get_attribute('href') != Default_Link:
-            break
+        driver.find_element(By.XPATH, '//*[@id="submit_i2ocr"]').submit()
+        Custom_Sleep(
+            driver,
+            By.ID,
+            'download_text',
+            Link,
+            'href'
+        )
 
-    href = driver.find_element(By.ID, 'download_text').get_attribute('href')
-    downloader(href)
+        href = driver.find_element(
+            By.ID, 'download_text').get_attribute('href')
+        Link = href
+        downloader(href, img.split('/')[-1])
